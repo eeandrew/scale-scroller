@@ -1,0 +1,7 @@
+.scale-scroller .scroller-item {
+	transition: transform .2s linear;
+}
+
+.scale-scroller .scroller-item.active {
+	transform: scale3d(1.4,1.4,1);
+}
