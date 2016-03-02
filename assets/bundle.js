@@ -67,7 +67,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_reactDom2.default.render(_react2.default.createElement(_ScaleScroller2.default, null), document.getElementById('app'));
+	_reactDom2.default.render(_react2.default.createElement(_ScaleScroller2.default, { itemWidth: 150, maxScale: 1.5 }), document.getElementById('app'));
 
 /***/ },
 /* 2 */
@@ -19709,12 +19709,25 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ScaleScroller).call(this));
 
 			_this.state = {
-				activeItemIndex: 0
+				activeItemIndex: 0,
+				adjacentItemIndex: 0,
+				scrollerWidth: 0,
+				scale: 1
 			};
 			return _this;
 		}
 
 		_createClass(ScaleScroller, [{
+			key: 'onScroll',
+			value: function onScroll() {
+				var delataScale = (this.props.maxScale - 1) / this.props.itemWidth;
+				var delataDistance = Math.abs(this.state.activeItemIndex * this.props.itemWidth - Math.abs(this.scroller.x));
+				var newScale = this.props.maxScale - delataScale * delataDistance;
+				this.setState({
+					scale: newScale < 1 ? 1 : newScale
+				});
+			}
+		}, {
 			key: 'componentDidMount',
 			value: function componentDidMount() {
 				var _this2 = this;
@@ -19722,38 +19735,79 @@
 				this.scroller = new IScroll(_reactDom2.default.findDOMNode(this), {
 					scrollX: true,
 					scrollY: false,
-					scrollbars: true,
-					probeType: 3
+					scrollbars: false,
+					probeType: 3,
+					momentum: true
 				});
 
 				this.scroller.on('scroll', function () {
-					console.log(_this2.scroller.x);
-					_this2.setState({
-						activeItemIndex: Math.floor(Math.abs(_this2.scroller.x) / 50)
-					});
+					console.log('scroller');
+					console.log(_this2.scroller.directionX);
+					_this2.onScroll.apply(_this2);
 				});
+
+				this.scroller.on('iscrollTouchEnd', function () {
+					console.log('iscrollTouchEnd');
+					console.log(_this2.scroller.x);
+					var nextIndex = _this2.state.activeItemIndex;
+					if (_this2.scroller.x >= 0) {
+						if (nextIndex === 1) {
+							nextIndex = 0;
+						}
+					} else if (Math.abs(_this2.scroller.x) >= _this2.props.itemWidth / 2 + nextIndex * _this2.props.itemWidth) {
+						++nextIndex;
+					} else if (Math.abs(_this2.scroller.x) < nextIndex * _this2.props.itemWidth - _this2.props.itemWidth / 2) {
+						--nextIndex;
+					}
+					nextIndex >= 10 ? nextIndex = 9 : nextIndex < 0 ? nextIndex = 0 : nextIndex;
+					_this2.setState({
+						activeItemIndex: nextIndex
+					});
+					_this2.scroller.scrollTo(_this2.props.itemWidth * nextIndex * -1, 0, 1000);
+				});
+
+				this.setState({
+					scrollerWidth: _reactDom2.default.findDOMNode(this).offsetWidth
+				});
+
+				this.onScroll.apply(this);
+			}
+		}, {
+			key: 'componentDidUpdate',
+			value: function componentDidUpdate() {
+				this.scroller.refresh();
+			}
+		}, {
+			key: 'getItemStyle',
+			value: function getItemStyle(width, scale) {
+				return {
+					width: width + 'px',
+					height: '100%',
+					float: 'left',
+					padding: '10px 20px',
+					listStyle: 'none',
+					transform: 'scale3d(' + scale + ',' + scale + ',1)',
+					WebkitTransform: 'scale3d(' + scale + ',' + scale + ',1)',
+					transition: 'transform .05s linear',
+					WebkitTransition: 'transform .05s linear'
+				};
 			}
 		}, {
 			key: 'getMockChildren',
 			value: function getMockChildren() {
 				var _this3 = this;
 
-				var itemStyle = {
-					width: '50px',
-					height: '50px',
-					float: 'left',
-					margin: '10px',
-					background: 'gray',
-					listStyle: 'none'
-				};
 				return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(function (item, index) {
-					console.log(item);
-					var activeClassName = _this3.state.activeItemIndex === index ? 'active' : '';
-					activeClassName = 'scroller-item ' + activeClassName;
+					var itemScale = _this3.state.activeItemIndex === index ? _this3.state.scale : 1;
+					var itemStyle = _this3.getItemStyle(_this3.props.itemWidth, itemScale);
 					return _react2.default.createElement(
 						'li',
-						{ className: activeClassName, style: itemStyle, key: item },
-						item
+						{ style: itemStyle, key: item },
+						_react2.default.createElement(
+							'div',
+							{ style: { background: 'gray', height: '100%' } },
+							item
+						)
 					);
 				});
 			}
@@ -19769,20 +19823,25 @@
 				var scrollerStyle = {
 					position: 'absolute',
 					height: '100%',
-					width: '800px'
+					width: this.props.itemWidth * 10 + this.state.scrollerWidth - this.props.itemWidth + 'px'
 				};
 				var listStyle = {
 					padding: '0',
 					listStyle: 'none',
 					margin: '0'
 				};
+
+				var placeholderWidth = this.state.scrollerWidth / 2 - this.props.itemWidth / 2 + 'px';
+
 				return _react2.default.createElement(
 					'div',
 					{ style: wrapperStyle, className: 'scale-scroller' },
 					_react2.default.createElement(
 						'div',
 						{ style: scrollerStyle },
-						this.getMockChildren.apply(this)
+						_react2.default.createElement('li', { style: { height: '50px', width: placeholderWidth, float: 'left', listStyle: 'none' } }),
+						this.getMockChildren.apply(this),
+						_react2.default.createElement('li', { style: { height: '50px', width: placeholderWidth, float: 'left', listStyle: 'none' } })
 					)
 				);
 			}
@@ -19792,6 +19851,12 @@
 	}(_react2.default.Component);
 
 	exports.default = ScaleScroller;
+
+
+	ScaleScroller.propTypes = {
+		itemWidth: _react2.default.PropTypes.number,
+		maxScale: _react2.default.PropTypes.number
+	};
 
 /***/ },
 /* 161 */
@@ -19828,7 +19893,7 @@
 
 
 	// module
-	exports.push([module.id, ".scale-scroller .scroller-item {\n\ttransition: transform .2s linear;\n}\n\n.scale-scroller .scroller-item.active {\n\ttransform: scale3d(1.4,1.4,1);\n}", ""]);
+	exports.push([module.id, ".scale-scroller .scroller-item {\n\ttransition: transform .2s linear;\n}\n\n.scale-scroller .scroller-item.active {\n\ttransform: scale3d(1.6,1.6,1);\n}", ""]);
 
 	// exports
 
