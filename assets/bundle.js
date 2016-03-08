@@ -19712,6 +19712,7 @@
 				activeItemIndex: 0,
 				adjacentItemIndex: 0,
 				scrollerWidth: 0,
+				itemWidth: 0,
 				scale: 1
 			};
 			return _this;
@@ -19767,7 +19768,8 @@
 				});
 
 				this.setState({
-					scrollerWidth: _reactDom2.default.findDOMNode(this).offsetWidth
+					scrollerWidth: _reactDom2.default.findDOMNode(this).offsetWidth,
+					itemWidth: _reactDom2.default.findDOMNode(this).offsetWidth / this.props.itemsCount
 				});
 
 				this.onScroll.apply(this);
@@ -19787,13 +19789,13 @@
 					padding: '10px 20px',
 					listStyle: 'none',
 					transform: 'scale3d(' + scale + ',' + scale + ',1)',
-					WebkitTransform: 'scale3d(' + scale + ',' + scale + ',1)',
-					transition: 'transform .05s linear',
-					WebkitTransition: 'transform .05s linear'
+					WebkitTransform: 'scale3d(' + scale + ',' + scale + ',1)'
 				};
 			}
 		}, {
 			key: 'getMockChildren',
+			// transition: 'transform .05s linear',
+			// WebkitTransition : 'transform .05s linear',
 			value: function getMockChildren() {
 				var _this3 = this;
 
@@ -19855,7 +19857,12 @@
 
 	ScaleScroller.propTypes = {
 		itemWidth: _react2.default.PropTypes.number,
-		maxScale: _react2.default.PropTypes.number
+		maxScale: _react2.default.PropTypes.number,
+		itemsCount: _react2.default.PropTypes.number
+	};
+
+	ScaleScroller.defaultProps = {
+		itemsCount: 3
 	};
 
 /***/ },

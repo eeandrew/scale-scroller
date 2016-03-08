@@ -9,6 +9,7 @@ export default class ScaleScroller extends React.Component {
 			activeItemIndex : 0,
 			adjacentItemIndex : 0,
 			scrollerWidth : 0,
+			itemWidth : 0,
 			scale:1,
 		}
 	}
@@ -61,7 +62,8 @@ export default class ScaleScroller extends React.Component {
 		})
 
 		this.setState({
-			scrollerWidth : ReactDOM.findDOMNode(this).offsetWidth
+			scrollerWidth : ReactDOM.findDOMNode(this).offsetWidth,
+			itemWidth : ReactDOM.findDOMNode(this).offsetWidth / this.props.itemsCount
 		})
 
 		this.onScroll.apply(this)
@@ -81,8 +83,8 @@ export default class ScaleScroller extends React.Component {
 			listStyle:'none',
 			transform: 'scale3d(' + scale + ',' + scale + ',1)',
 			WebkitTransform: 'scale3d(' + scale + ',' + scale + ',1)',
-			transition: 'transform .05s linear',
-			WebkitTransition : 'transform .05s linear',
+			// transition: 'transform .05s linear',
+			// WebkitTransition : 'transform .05s linear',
 		}
 	}
 
@@ -129,4 +131,9 @@ export default class ScaleScroller extends React.Component {
 ScaleScroller.propTypes = {
 	itemWidth : React.PropTypes.number,
 	maxScale : React.PropTypes.number,
+	itemsCount : React.PropTypes.number,
+}
+
+ScaleScroller.defaultProps = {
+	itemsCount : 3
 }
