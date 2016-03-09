@@ -67,7 +67,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_reactDom2.default.render(_react2.default.createElement(_ScaleScroller2.default, { itemWidth: 150, maxScale: 1.5 }), document.getElementById('app'));
+	_reactDom2.default.render(_react2.default.createElement(
+	  'div',
+	  { style: { height: '100px' } },
+	  _react2.default.createElement(_ScaleScroller2.default, { itemsCount: 4, maxScale: 1.5 })
+	), document.getElementById('app'));
 
 /***/ },
 /* 2 */
@@ -19721,8 +19725,8 @@
 		_createClass(ScaleScroller, [{
 			key: 'onScroll',
 			value: function onScroll() {
-				var delataScale = (this.props.maxScale - 1) / this.props.itemWidth;
-				var delataDistance = Math.abs(this.state.activeItemIndex * this.props.itemWidth - Math.abs(this.scroller.x));
+				var delataScale = (this.props.maxScale - 1) / this.state.itemWidth;
+				var delataDistance = Math.abs(this.state.activeItemIndex * this.state.itemWidth - Math.abs(this.scroller.x));
 				var newScale = this.props.maxScale - delataScale * delataDistance;
 				this.setState({
 					scale: newScale < 1 ? 1 : newScale
@@ -19738,8 +19742,7 @@
 					scrollY: false,
 					scrollbars: false,
 					probeType: 3,
-					momentum: false,
-					bounce: false
+					momentum: false
 				});
 
 				this.scroller.on('scroll', function () {
@@ -19747,26 +19750,6 @@
 					console.log(_this2.scroller.directionX);
 					console.log(_this2.state.activeItemIndex);
 					_this2.onScroll.apply(_this2);
-				});
-
-				this.scroller.on('scrollEnd', function () {
-					console.log('scrollEnd');
-					// let nextIndex = this.state.activeItemIndex
-					// if(this.scroller.x >= 0) {
-					// 	if(nextIndex === 1) {
-					// 		nextIndex = 0
-					// 	}
-					// }else if(Math.abs(this.scroller.x) >= (this.state.itemWidth/2 + nextIndex*this.state.itemWidth)) {
-					// 	++nextIndex
-
-					// }else if(Math.abs(this.scroller.x) < (nextIndex*this.state.itemWidth - this.state.itemWidth/2)) {
-					// 	--nextIndex
-					// }
-					// nextIndex >= this.props.itemsCount ? nextIndex=(this.props.itemsCount - 1) : nextIndex < 0 ? nextIndex=0 :nextIndex
-					// this.setState({
-					// 	activeItemIndex : nextIndex
-					// })
-					// this.scroller.scrollTo(this.state.itemWidth*nextIndex*-1,0,300)
 				});
 
 				this.scroller.on('iscrollTouchEnd', function () {
@@ -19792,12 +19775,18 @@
 					itemWidth: _reactDom2.default.findDOMNode(this).offsetWidth / this.props.itemsCount
 				});
 
-				this.onScroll.apply(this);
+				this.setState({
+					scale: this.props.maxScale
+				});
+
+				setTimeout(function () {
+					_this2.scroller.refresh();
+				}, 1);
 			}
 		}, {
 			key: 'componentDidUpdate',
 			value: function componentDidUpdate() {
-				this.scroller.refresh();
+				//this.scroller.refresh()
 			}
 		}, {
 			key: 'getItemStyle',
@@ -19839,13 +19828,13 @@
 				var wrapperStyle = {
 					position: 'relative',
 					width: '100%',
-					height: '100px',
+					height: '100%',
 					overflow: 'hidden'
 				};
 				var scrollerStyle = {
 					position: 'absolute',
 					height: '100%',
-					width: this.state.itemWidth * 10 + this.state.scrollerWidth - this.state.itemWidth + 'px'
+					width: this.state.itemWidth * this.props.itemsCount + this.state.scrollerWidth - this.state.itemWidth + 'px'
 				};
 				var listStyle = {
 					padding: '0',
@@ -19861,9 +19850,9 @@
 					_react2.default.createElement(
 						'div',
 						{ style: scrollerStyle },
-						_react2.default.createElement('li', { style: { height: '50px', width: placeholderWidth, float: 'left', listStyle: 'none' } }),
+						_react2.default.createElement('li', { style: { height: '100%', width: placeholderWidth, float: 'left', listStyle: 'none' } }),
 						this.getMockChildren.apply(this),
-						_react2.default.createElement('li', { style: { height: '50px', width: placeholderWidth, float: 'left', listStyle: 'none' } })
+						_react2.default.createElement('li', { style: { height: '100%', width: placeholderWidth, float: 'left', listStyle: 'none' } })
 					)
 				);
 			}
@@ -19876,7 +19865,6 @@
 
 
 	ScaleScroller.propTypes = {
-		itemWidth: _react2.default.PropTypes.number,
 		maxScale: _react2.default.PropTypes.number,
 		itemsCount: _react2.default.PropTypes.number
 	};

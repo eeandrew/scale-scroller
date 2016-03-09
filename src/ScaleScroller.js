@@ -15,8 +15,8 @@ export default class ScaleScroller extends React.Component {
 	}
 
 	onScroll() {
-		let delataScale = (this.props.maxScale - 1) / this.props.itemWidth
-		let delataDistance = Math.abs(this.state.activeItemIndex*this.props.itemWidth - Math.abs(this.scroller.x))
+		let delataScale = (this.props.maxScale - 1) / this.state.itemWidth
+		let delataDistance = Math.abs(this.state.activeItemIndex*this.state.itemWidth - Math.abs(this.scroller.x))
 		let newScale = this.props.maxScale - delataScale * delataDistance
 		this.setState({
 			scale : newScale < 1 ? 1 : newScale
@@ -30,7 +30,6 @@ export default class ScaleScroller extends React.Component {
 			scrollbars : false,
 			probeType : 3,
 			momentum : false,
-			bounce : false,
 		})
 
 
@@ -41,25 +40,6 @@ export default class ScaleScroller extends React.Component {
 			this.onScroll.apply(this);
 		})
 
-		this.scroller.on('scrollEnd',()=>{
-			console.log('scrollEnd')
-			// let nextIndex = this.state.activeItemIndex
-			// if(this.scroller.x >= 0) {
-			// 	if(nextIndex === 1) {
-			// 		nextIndex = 0
-			// 	}
-			// }else if(Math.abs(this.scroller.x) >= (this.state.itemWidth/2 + nextIndex*this.state.itemWidth)) {
-			// 	++nextIndex
-				
-			// }else if(Math.abs(this.scroller.x) < (nextIndex*this.state.itemWidth - this.state.itemWidth/2)) {
-			// 	--nextIndex
-			// }
-			// nextIndex >= this.props.itemsCount ? nextIndex=(this.props.itemsCount - 1) : nextIndex < 0 ? nextIndex=0 :nextIndex
-			// this.setState({
-			// 	activeItemIndex : nextIndex
-			// })
-			// this.scroller.scrollTo(this.state.itemWidth*nextIndex*-1,0,300)
-		})
 
 		this.scroller.on('iscrollTouchEnd',()=>{
 			let nextIndex = this.state.activeItemIndex
@@ -85,12 +65,17 @@ export default class ScaleScroller extends React.Component {
 			itemWidth : ReactDOM.findDOMNode(this).offsetWidth / this.props.itemsCount
 		})
 
-		this.onScroll.apply(this)
+		this.setState({
+			scale : this.props.maxScale
+		})
 
+		setTimeout(()=>{
+			this.scroller.refresh()
+		},1)
 	}
 
 	componentDidUpdate() {
-		this.scroller.refresh()
+		//this.scroller.refresh()
 	}
 
 	getItemStyle(width,scale) {
@@ -121,13 +106,13 @@ export default class ScaleScroller extends React.Component {
 		let wrapperStyle = {
 			position:'relative',
 			width:'100%',
-			height:'100px',
+			height:'100%',
 			overflow:'hidden',
 		}
 		let scrollerStyle = {
 			position : 'absolute',
 			height: '100%',
-			width: (this.state.itemWidth * 10 + this.state.scrollerWidth - this.state.itemWidth) + 'px',
+			width: (this.state.itemWidth * this.props.itemsCount + this.state.scrollerWidth - this.state.itemWidth) + 'px',
 		}
 		let listStyle = {
 			padding:'0',
@@ -140,9 +125,9 @@ export default class ScaleScroller extends React.Component {
 		return (
 			<div style={wrapperStyle} className="scale-scroller">
 				<div style={scrollerStyle}>
-					<li style={{height:'50px',width: placeholderWidth ,float:'left',listStyle:'none'}}></li>
+					<li style={{height:'100%',width: placeholderWidth ,float:'left',listStyle:'none'}}></li>
 					{this.getMockChildren.apply(this)}
-					<li style={{height:'50px',width: placeholderWidth ,float:'left',listStyle:'none'}}></li>
+					<li style={{height:'100%',width: placeholderWidth ,float:'left',listStyle:'none'}}></li>
 				</div>
 			</div>	
 		)
@@ -150,7 +135,6 @@ export default class ScaleScroller extends React.Component {
 }
 
 ScaleScroller.propTypes = {
-	itemWidth : React.PropTypes.number,
 	maxScale : React.PropTypes.number,
 	itemsCount : React.PropTypes.number,
 }

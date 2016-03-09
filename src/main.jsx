@@ -4,4 +4,4 @@ import ScaleScroller from './ScaleScroller.js';
 
 
 
-ReactDom.render(<ScaleScroller itemWidth={150} maxScale={1.5}/>,document.getElementById('app'))
+ReactDom.render(<div style={{height:'100px'}}><ScaleScroller itemsCount={4} maxScale={1.5}/></div>,document.getElementById('app'))
