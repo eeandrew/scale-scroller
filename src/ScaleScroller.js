@@ -29,7 +29,8 @@ export default class ScaleScroller extends React.Component {
 			scrollY : false,
 			scrollbars : false,
 			probeType : 3,
-			momentum : true,
+			momentum : false,
+			bounce : false,
 		})
 
 
@@ -40,9 +41,27 @@ export default class ScaleScroller extends React.Component {
 			this.onScroll.apply(this);
 		})
 
+		this.scroller.on('scrollEnd',()=>{
+			console.log('scrollEnd')
+			// let nextIndex = this.state.activeItemIndex
+			// if(this.scroller.x >= 0) {
+			// 	if(nextIndex === 1) {
+			// 		nextIndex = 0
+			// 	}
+			// }else if(Math.abs(this.scroller.x) >= (this.state.itemWidth/2 + nextIndex*this.state.itemWidth)) {
+			// 	++nextIndex
+				
+			// }else if(Math.abs(this.scroller.x) < (nextIndex*this.state.itemWidth - this.state.itemWidth/2)) {
+			// 	--nextIndex
+			// }
+			// nextIndex >= this.props.itemsCount ? nextIndex=(this.props.itemsCount - 1) : nextIndex < 0 ? nextIndex=0 :nextIndex
+			// this.setState({
+			// 	activeItemIndex : nextIndex
+			// })
+			// this.scroller.scrollTo(this.state.itemWidth*nextIndex*-1,0,300)
+		})
+
 		this.scroller.on('iscrollTouchEnd',()=>{
-			console.log('iscrollTouchEnd')
-			console.log(this.scroller.x)
 			let nextIndex = this.state.activeItemIndex
 			if(this.scroller.x >= 0) {
 				if(nextIndex === 1) {

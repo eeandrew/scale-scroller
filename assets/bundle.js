@@ -19738,7 +19738,8 @@
 					scrollY: false,
 					scrollbars: false,
 					probeType: 3,
-					momentum: true
+					momentum: false,
+					bounce: false
 				});
 
 				this.scroller.on('scroll', function () {
@@ -19748,9 +19749,27 @@
 					_this2.onScroll.apply(_this2);
 				});
 
+				this.scroller.on('scrollEnd', function () {
+					console.log('scrollEnd');
+					// let nextIndex = this.state.activeItemIndex
+					// if(this.scroller.x >= 0) {
+					// 	if(nextIndex === 1) {
+					// 		nextIndex = 0
+					// 	}
+					// }else if(Math.abs(this.scroller.x) >= (this.state.itemWidth/2 + nextIndex*this.state.itemWidth)) {
+					// 	++nextIndex
+
+					// }else if(Math.abs(this.scroller.x) < (nextIndex*this.state.itemWidth - this.state.itemWidth/2)) {
+					// 	--nextIndex
+					// }
+					// nextIndex >= this.props.itemsCount ? nextIndex=(this.props.itemsCount - 1) : nextIndex < 0 ? nextIndex=0 :nextIndex
+					// this.setState({
+					// 	activeItemIndex : nextIndex
+					// })
+					// this.scroller.scrollTo(this.state.itemWidth*nextIndex*-1,0,300)
+				});
+
 				this.scroller.on('iscrollTouchEnd', function () {
-					console.log('iscrollTouchEnd');
-					console.log(_this2.scroller.x);
 					var nextIndex = _this2.state.activeItemIndex;
 					if (_this2.scroller.x >= 0) {
 						if (nextIndex === 1) {
