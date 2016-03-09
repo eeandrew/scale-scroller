@@ -70,7 +70,7 @@
 	_reactDom2.default.render(_react2.default.createElement(
 	  'div',
 	  { style: { height: '100px' } },
-	  _react2.default.createElement(_ScaleScroller2.default, { itemsCount: 4, maxScale: 1.5 })
+	  _react2.default.createElement(_ScaleScroller2.default, { itemsCount: 3, maxScale: 1.5 })
 	), document.getElementById('app'));
 
 /***/ },
