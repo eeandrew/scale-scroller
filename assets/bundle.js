@@ -19744,6 +19744,7 @@
 				this.scroller.on('scroll', function () {
 					console.log('scroller');
 					console.log(_this2.scroller.directionX);
+					console.log(_this2.state.activeItemIndex);
 					_this2.onScroll.apply(_this2);
 				});
 
@@ -19755,16 +19756,16 @@
 						if (nextIndex === 1) {
 							nextIndex = 0;
 						}
-					} else if (Math.abs(_this2.scroller.x) >= _this2.props.itemWidth / 2 + nextIndex * _this2.props.itemWidth) {
+					} else if (Math.abs(_this2.scroller.x) >= _this2.state.itemWidth / 2 + nextIndex * _this2.state.itemWidth) {
 						++nextIndex;
-					} else if (Math.abs(_this2.scroller.x) < nextIndex * _this2.props.itemWidth - _this2.props.itemWidth / 2) {
+					} else if (Math.abs(_this2.scroller.x) < nextIndex * _this2.state.itemWidth - _this2.state.itemWidth / 2) {
 						--nextIndex;
 					}
-					nextIndex >= 10 ? nextIndex = 9 : nextIndex < 0 ? nextIndex = 0 : nextIndex;
+					nextIndex >= _this2.props.itemsCount ? nextIndex = _this2.props.itemsCount - 1 : nextIndex < 0 ? nextIndex = 0 : nextIndex;
 					_this2.setState({
 						activeItemIndex: nextIndex
 					});
-					_this2.scroller.scrollTo(_this2.props.itemWidth * nextIndex * -1, 0, 1000);
+					_this2.scroller.scrollTo(_this2.state.itemWidth * nextIndex * -1, 0, 300);
 				});
 
 				this.setState({
@@ -19797,21 +19798,21 @@
 			// transition: 'transform .05s linear',
 			// WebkitTransition : 'transform .05s linear',
 			value: function getMockChildren() {
-				var _this3 = this;
-
-				return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(function (item, index) {
-					var itemScale = _this3.state.activeItemIndex === index ? _this3.state.scale : 1;
-					var itemStyle = _this3.getItemStyle(_this3.props.itemWidth, itemScale);
-					return _react2.default.createElement(
+				var children = [];
+				for (var i = 0; i < this.props.itemsCount; i++) {
+					var itemScale = this.state.activeItemIndex === i ? this.state.scale : 1;
+					var itemStyle = this.getItemStyle(this.state.itemWidth, itemScale);
+					children.push(_react2.default.createElement(
 						'li',
-						{ style: itemStyle, key: item },
+						{ style: itemStyle, key: i },
 						_react2.default.createElement(
 							'div',
 							{ style: { background: 'gray', height: '100%' } },
-							item
+							i
 						)
-					);
-				});
+					));
+				}
+				return children;
 			}
 		}, {
 			key: 'render',
@@ -19825,7 +19826,7 @@
 				var scrollerStyle = {
 					position: 'absolute',
 					height: '100%',
-					width: this.props.itemWidth * 10 + this.state.scrollerWidth - this.props.itemWidth + 'px'
+					width: this.state.itemWidth * 10 + this.state.scrollerWidth - this.state.itemWidth + 'px'
 				};
 				var listStyle = {
 					padding: '0',
@@ -19833,7 +19834,7 @@
 					margin: '0'
 				};
 
-				var placeholderWidth = this.state.scrollerWidth / 2 - this.props.itemWidth / 2 + 'px';
+				var placeholderWidth = this.state.scrollerWidth / 2 - this.state.itemWidth / 2 + 'px';
 
 				return _react2.default.createElement(
 					'div',

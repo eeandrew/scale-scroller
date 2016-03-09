@@ -36,6 +36,7 @@ export default class ScaleScroller extends React.Component {
 		this.scroller.on('scroll',()=>{
 			console.log('scroller')
 			console.log(this.scroller.directionX)
+			console.log(this.state.activeItemIndex)
 			this.onScroll.apply(this);
 		})
 
@@ -47,18 +48,17 @@ export default class ScaleScroller extends React.Component {
 				if(nextIndex === 1) {
 					nextIndex = 0
 				}
-			}else if(Math.abs(this.scroller.x) >= (this.props.itemWidth/2 + nextIndex*this.props.itemWidth)) {
+			}else if(Math.abs(this.scroller.x) >= (this.state.itemWidth/2 + nextIndex*this.state.itemWidth)) {
 				++nextIndex
 				
-			}else if(Math.abs(this.scroller.x) < (nextIndex*this.props.itemWidth - this.props.itemWidth/2)) {
+			}else if(Math.abs(this.scroller.x) < (nextIndex*this.state.itemWidth - this.state.itemWidth/2)) {
 				--nextIndex
 			}
-			nextIndex >= 10 ? nextIndex=9 : nextIndex < 0 ? nextIndex=0 :nextIndex
+			nextIndex >= this.props.itemsCount ? nextIndex=(this.props.itemsCount - 1) : nextIndex < 0 ? nextIndex=0 :nextIndex
 			this.setState({
 				activeItemIndex : nextIndex
 			})
-			this.scroller.scrollTo(this.props.itemWidth*nextIndex*-1,0,1000)
-
+			this.scroller.scrollTo(this.state.itemWidth*nextIndex*-1,0,300)
 		})
 
 		this.setState({
@@ -89,11 +89,13 @@ export default class ScaleScroller extends React.Component {
 	}
 
 	getMockChildren() {
-		return [1,2,3,4,5,6,7,8,9,10].map((item,index)=>{
-			let itemScale = this.state.activeItemIndex === index ? this.state.scale : 1
-			let itemStyle = this.getItemStyle(this.props.itemWidth,itemScale)
-			return <li style={itemStyle} key={item}><div style={{background:'gray',height:'100%'}}>{item}</div></li>
-		})
+		let children = [];
+		for(let i=0;i<this.props.itemsCount;i++) {
+			let itemScale = this.state.activeItemIndex === i ? this.state.scale : 1
+			let itemStyle = this.getItemStyle(this.state.itemWidth,itemScale)
+			children.push(<li style={itemStyle} key={i}><div style={{background:'gray',height:'100%'}}>{i}</div></li>)
+		}
+		return children;
 	}
 
 	render() {
@@ -106,7 +108,7 @@ export default class ScaleScroller extends React.Component {
 		let scrollerStyle = {
 			position : 'absolute',
 			height: '100%',
-			width: (this.props.itemWidth * 10 + this.state.scrollerWidth - this.props.itemWidth) + 'px',
+			width: (this.state.itemWidth * 10 + this.state.scrollerWidth - this.state.itemWidth) + 'px',
 		}
 		let listStyle = {
 			padding:'0',
@@ -114,7 +116,7 @@ export default class ScaleScroller extends React.Component {
 			margin:'0',
 		}
 
-		let placeholderWidth = (this.state.scrollerWidth / 2 - this.props.itemWidth / 2) + 'px'
+		let placeholderWidth = (this.state.scrollerWidth / 2 - this.state.itemWidth / 2) + 'px'
 
 		return (
 			<div style={wrapperStyle} className="scale-scroller">
