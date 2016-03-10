@@ -65,12 +65,17 @@
 
 	var _ScaleScroller2 = _interopRequireDefault(_ScaleScroller);
 
+	var _ScaleBackground = __webpack_require__(165);
+
+	var _ScaleBackground2 = _interopRequireDefault(_ScaleBackground);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	_reactDom2.default.render(_react2.default.createElement(
 	  'div',
-	  { style: { height: '100px' } },
-	  _react2.default.createElement(_ScaleScroller2.default, { itemsCount: 3, maxScale: 1.5 })
+	  null,
+	  _react2.default.createElement(_ScaleBackground2.default, null),
+	  _react2.default.createElement(_ScaleScroller2.default, { itemsCount: 3, maxFont: 3 })
 	), document.getElementById('app'));
 
 /***/ },
@@ -19717,7 +19722,7 @@
 				adjacentItemIndex: 0,
 				scrollerWidth: 0,
 				itemWidth: 0,
-				scale: 1
+				font: 1.6
 			};
 			return _this;
 		}
@@ -19725,11 +19730,11 @@
 		_createClass(ScaleScroller, [{
 			key: 'onScroll',
 			value: function onScroll() {
-				var delataScale = (this.props.maxScale - 1) / this.state.itemWidth;
+				var delataFont = (this.props.maxFont - this.props.normalFont) / this.state.itemWidth;
 				var delataDistance = Math.abs(this.state.activeItemIndex * this.state.itemWidth - Math.abs(this.scroller.x));
-				var newScale = this.props.maxScale - delataScale * delataDistance;
+				var newFont = this.props.maxFont - delataFont * delataDistance;
 				this.setState({
-					scale: newScale < 1 ? 1 : newScale
+					font: newFont < this.props.normalFont ? this.props.normalFont : newFont
 				});
 			}
 		}, {
@@ -19746,9 +19751,6 @@
 				});
 
 				this.scroller.on('scroll', function () {
-					console.log('scroller');
-					console.log(_this2.scroller.directionX);
-					console.log(_this2.state.activeItemIndex);
 					_this2.onScroll.apply(_this2);
 				});
 
@@ -19763,7 +19765,7 @@
 					} else if (Math.abs(_this2.scroller.x) < nextIndex * _this2.state.itemWidth - _this2.state.itemWidth / 2) {
 						--nextIndex;
 					}
-					nextIndex >= _this2.props.itemsCount ? nextIndex = _this2.props.itemsCount - 1 : nextIndex < 0 ? nextIndex = 0 : nextIndex;
+					nextIndex >= _this2.props.items.length ? nextIndex = _this2.props.items.length - 1 : nextIndex < 0 ? nextIndex = 0 : nextIndex;
 					_this2.setState({
 						activeItemIndex: nextIndex
 					});
@@ -19772,11 +19774,11 @@
 
 				this.setState({
 					scrollerWidth: _reactDom2.default.findDOMNode(this).offsetWidth,
-					itemWidth: _reactDom2.default.findDOMNode(this).offsetWidth / this.props.itemsCount
+					itemWidth: _reactDom2.default.findDOMNode(this).offsetWidth / this.props.columns
 				});
 
 				this.setState({
-					scale: this.props.maxScale
+					font: this.props.maxFont
 				});
 
 				setTimeout(function () {
@@ -19790,15 +19792,18 @@
 			}
 		}, {
 			key: 'getItemStyle',
-			value: function getItemStyle(width, scale) {
+			value: function getItemStyle(width, font) {
 				return {
 					width: width + 'px',
 					height: '100%',
 					float: 'left',
-					padding: '10px 20px',
 					listStyle: 'none',
-					transform: 'scale3d(' + scale + ',' + scale + ',1)',
-					WebkitTransform: 'scale3d(' + scale + ',' + scale + ',1)'
+					fontSize: font + 'rem',
+					display: 'flex',
+					display: '-webkit-flex',
+					justifyContent: 'center',
+					flexDirection: 'column',
+					alignItems: 'center'
 				};
 			}
 		}, {
@@ -19807,16 +19812,17 @@
 			// WebkitTransition : 'transform .05s linear',
 			value: function getMockChildren() {
 				var children = [];
-				for (var i = 0; i < this.props.itemsCount; i++) {
-					var itemScale = this.state.activeItemIndex === i ? this.state.scale : 1;
-					var itemStyle = this.getItemStyle(this.state.itemWidth, itemScale);
+				for (var i = 0; i < this.props.items.length; i++) {
+					var itemFont = this.state.activeItemIndex === i ? this.state.font : 1;
+					var itemStyle = this.getItemStyle(this.state.itemWidth, itemFont);
+					var isActive = this.state.activeItemIndex === i ? 'active' : '';
 					children.push(_react2.default.createElement(
 						'li',
-						{ style: itemStyle, key: i },
+						{ style: itemStyle, className: "scroller-item " + isActive, key: i },
 						_react2.default.createElement(
 							'div',
-							{ style: { background: 'gray', height: '100%' } },
-							i
+							{ className: 'seal-txt' },
+							this.props.items[i].seal
 						)
 					));
 				}
@@ -19825,16 +19831,8 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var wrapperStyle = {
-					position: 'relative',
-					width: '100%',
-					height: '100%',
-					overflow: 'hidden'
-				};
 				var scrollerStyle = {
-					position: 'absolute',
-					height: '100%',
-					width: this.state.itemWidth * this.props.itemsCount + this.state.scrollerWidth - this.state.itemWidth + 'px'
+					width: this.state.itemWidth * this.props.items.length + this.state.scrollerWidth - this.state.itemWidth + 'px'
 				};
 				var listStyle = {
 					padding: '0',
@@ -19842,14 +19840,14 @@
 					margin: '0'
 				};
 
-				var placeholderWidth = this.state.scrollerWidth / 2 - this.state.itemWidth / 2 + 'px';
+				var placeholderWidth = this.state.scrollerWidth / this.props.columns + 'px';
 
 				return _react2.default.createElement(
 					'div',
-					{ style: wrapperStyle, className: 'scale-scroller' },
+					{ className: 'scale-wrapper' },
 					_react2.default.createElement(
 						'div',
-						{ style: scrollerStyle },
+						{ style: scrollerStyle, className: 'scale-scroller' },
 						_react2.default.createElement('li', { style: { height: '100%', width: placeholderWidth, float: 'left', listStyle: 'none' } }),
 						this.getMockChildren.apply(this),
 						_react2.default.createElement('li', { style: { height: '100%', width: placeholderWidth, float: 'left', listStyle: 'none' } })
@@ -19865,12 +19863,19 @@
 
 
 	ScaleScroller.propTypes = {
-		maxScale: _react2.default.PropTypes.number,
-		itemsCount: _react2.default.PropTypes.number
+		maxFont: _react2.default.PropTypes.number,
+		normalFont: _react2.default.PropTypes.number,
+		itemsCount: _react2.default.PropTypes.number,
+		columns: _react2.default.PropTypes.number,
+		items: _react2.default.PropTypes.array
 	};
 
 	ScaleScroller.defaultProps = {
-		itemsCount: 3
+		maxFont: 3,
+		normalFont: 1.6,
+		itemsCount: 3,
+		columns: 3,
+		items: [{ seal: '活期' }, { seal: '14天' }, { seal: '28天' }, { seal: '30天' }, { seal: '60天' }]
 	};
 
 /***/ },
@@ -19889,8 +19894,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./ScaleScroller.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./ScaleScroller.css");
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./ScaleScroller.less", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./ScaleScroller.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -19908,7 +19913,7 @@
 
 
 	// module
-	exports.push([module.id, ".scale-scroller .scroller-item {\n\ttransition: transform .2s linear;\n}\n\n.scale-scroller .scroller-item.active {\n\ttransform: scale3d(1.6,1.6,1);\n}", ""]);
+	exports.push([module.id, ".scale-wrapper {\n  position: relative;\n  width: 100%;\n  height: 9.9rem;\n  overflow: hidden;\n  border-bottom: 1px dashed #D8E2E9;\n}\n.scale-wrapper .scale-scroller {\n  position: absolute;\n  height: 100%;\n}\n.scale-wrapper .scale-scroller .scroller-item {\n  font-size: 1.8rem;\n  color: #9DACB6;\n}\n.scale-wrapper .scale-scroller .scroller-item .seal-txt {\n  margin-top: 3rem;\n}\n.scale-wrapper .scale-scroller .scroller-item.active {\n  margin-top: 0rem;\n  color: #FC7946;\n  transform: scale3d(1, 1, 1);\n}\n", ""]);
 
 	// exports
 
@@ -20222,6 +20227,59 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(148);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ScaleBackground = function ScaleBackground(props) {
+		var bgStyle = {
+			position: 'absolute',
+			height: '9.9rem',
+			background: '#FFF',
+			width: '100%',
+			left: 0,
+			right: 0
+		};
+		var cStyle = {
+			width: '33.3%',
+			height: 'calc(100% + 5px)',
+			borderBottom: '6px solid #FC7946',
+			textAlign: 'center',
+			margin: '0 auto',
+			paddingTop: '1.5rem',
+			color: '#FC7946',
+			fontSize: '1.3rem',
+			backgroundImage: '-webkit-gradient(linear, center top, center bottom, color-stop(0, #FFFFFF), color-stop(1, #FFF2EE))'
+		};
+		return _react2.default.createElement(
+			'div',
+			{ style: bgStyle },
+			_react2.default.createElement(
+				'div',
+				{ style: cStyle },
+				_react2.default.createElement(
+					'span',
+					null,
+					'选择锁定期'
+				)
+			)
+		);
+	};
+
+	exports.default = ScaleBackground;
 
 /***/ }
 /******/ ]);

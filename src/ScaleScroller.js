@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './ScaleScroller.css'
+import './ScaleScroller.less';
 
 export default class ScaleScroller extends React.Component {
 	constructor() {
@@ -10,16 +10,16 @@ export default class ScaleScroller extends React.Component {
 			adjacentItemIndex : 0,
 			scrollerWidth : 0,
 			itemWidth : 0,
-			scale:1,
+			font:1.6,
 		}
 	}
 
 	onScroll() {
-		let delataScale = (this.props.maxScale - 1) / this.state.itemWidth
+		let delataFont = (this.props.maxFont - this.props.normalFont) / this.state.itemWidth
 		let delataDistance = Math.abs(this.state.activeItemIndex*this.state.itemWidth - Math.abs(this.scroller.x))
-		let newScale = this.props.maxScale - delataScale * delataDistance
+		let newFont = this.props.maxFont - delataFont * delataDistance
 		this.setState({
-			scale : newScale < 1 ? 1 : newScale
+			font : newFont < this.props.normalFont ? this.props.normalFont : newFont
 		})
 	}
 
@@ -34,9 +34,6 @@ export default class ScaleScroller extends React.Component {
 
 
 		this.scroller.on('scroll',()=>{
-			console.log('scroller')
-			console.log(this.scroller.directionX)
-			console.log(this.state.activeItemIndex)
 			this.onScroll.apply(this);
 		})
 
@@ -53,20 +50,20 @@ export default class ScaleScroller extends React.Component {
 			}else if(Math.abs(this.scroller.x) < (nextIndex*this.state.itemWidth - this.state.itemWidth/2)) {
 				--nextIndex
 			}
-			nextIndex >= this.props.itemsCount ? nextIndex=(this.props.itemsCount - 1) : nextIndex < 0 ? nextIndex=0 :nextIndex
+			nextIndex >= this.props.items.length ? nextIndex=(this.props.items.length - 1) : nextIndex < 0 ? nextIndex=0 :nextIndex
 			this.setState({
-				activeItemIndex : nextIndex
+				activeItemIndex : nextIndex,
 			})
 			this.scroller.scrollTo(this.state.itemWidth*nextIndex*-1,0,300)
 		})
 
 		this.setState({
 			scrollerWidth : ReactDOM.findDOMNode(this).offsetWidth,
-			itemWidth : ReactDOM.findDOMNode(this).offsetWidth / this.props.itemsCount
+			itemWidth : ReactDOM.findDOMNode(this).offsetWidth / this.props.columns
 		})
 
 		this.setState({
-			scale : this.props.maxScale
+			font : this.props.maxFont
 		})
 
 		setTimeout(()=>{
@@ -78,15 +75,18 @@ export default class ScaleScroller extends React.Component {
 		//this.scroller.refresh()
 	}
 
-	getItemStyle(width,scale) {
+	getItemStyle(width,font) {
 		return {
 			width : width + 'px',
 			height:'100%',
 			float:'left',
-			padding:'10px 20px',
 			listStyle:'none',
-			transform: 'scale3d(' + scale + ',' + scale + ',1)',
-			WebkitTransform: 'scale3d(' + scale + ',' + scale + ',1)',
+			fontSize:font + 'rem',
+			display:'flex',
+			display:'-webkit-flex',
+			justifyContent:'center',
+			flexDirection:'column',
+			alignItems:'center',
 			// transition: 'transform .05s linear',
 			// WebkitTransition : 'transform .05s linear',
 		}
@@ -94,25 +94,19 @@ export default class ScaleScroller extends React.Component {
 
 	getMockChildren() {
 		let children = [];
-		for(let i=0;i<this.props.itemsCount;i++) {
-			let itemScale = this.state.activeItemIndex === i ? this.state.scale : 1
-			let itemStyle = this.getItemStyle(this.state.itemWidth,itemScale)
-			children.push(<li style={itemStyle} key={i}><div style={{background:'gray',height:'100%'}}>{i}</div></li>)
+		for(let i=0;i<this.props.items.length;i++) {
+			let itemFont = this.state.activeItemIndex === i ? this.state.font : 1;
+			let itemStyle = this.getItemStyle(this.state.itemWidth,itemFont);
+			let isActive = this.state.activeItemIndex === i ? 'active' : '';
+			children.push(<li style={itemStyle} className={"scroller-item " + isActive} key={i}><div className="seal-txt">{this.props.items[i].seal}</div></li>)
 		}
 		return children;
 	}
 
+
 	render() {
-		let wrapperStyle = {
-			position:'relative',
-			width:'100%',
-			height:'100%',
-			overflow:'hidden',
-		}
 		let scrollerStyle = {
-			position : 'absolute',
-			height: '100%',
-			width: (this.state.itemWidth * this.props.itemsCount + this.state.scrollerWidth - this.state.itemWidth) + 'px',
+			width: (this.state.itemWidth * this.props.items.length + this.state.scrollerWidth - this.state.itemWidth) + 'px',
 		}
 		let listStyle = {
 			padding:'0',
@@ -120,25 +114,32 @@ export default class ScaleScroller extends React.Component {
 			margin:'0',
 		}
 
-		let placeholderWidth = (this.state.scrollerWidth / 2 - this.state.itemWidth / 2) + 'px'
+		let placeholderWidth = (this.state.scrollerWidth / this.props.columns) + 'px'
 
 		return (
-			<div style={wrapperStyle} className="scale-scroller">
-				<div style={scrollerStyle}>
-					<li style={{height:'100%',width: placeholderWidth ,float:'left',listStyle:'none'}}></li>
-					{this.getMockChildren.apply(this)}
-					<li style={{height:'100%',width: placeholderWidth ,float:'left',listStyle:'none'}}></li>
-				</div>
-			</div>	
+				<div className="scale-wrapper">
+					<div style={scrollerStyle} className="scale-scroller">
+						<li style={{height:'100%',width: placeholderWidth ,float:'left',listStyle:'none'}}></li>
+						{this.getMockChildren.apply(this)}
+						<li style={{height:'100%',width: placeholderWidth ,float:'left',listStyle:'none'}}></li>
+					</div>
+				</div>	
 		)
 	}
 }
 
 ScaleScroller.propTypes = {
-	maxScale : React.PropTypes.number,
+	maxFont : React.PropTypes.number,
+	normalFont : React.PropTypes.number,
 	itemsCount : React.PropTypes.number,
+	columns : React.PropTypes.number,
+	items : React.PropTypes.array,
 }
 
 ScaleScroller.defaultProps = {
-	itemsCount : 3
+	maxFont : 3,
+	normalFont : 1.6,
+	itemsCount : 3,
+	columns : 3,
+	items:[{seal:'活期'},{seal:'14天'},{seal:'28天'},{seal:'30天'},{seal:'60天'}]
 }
