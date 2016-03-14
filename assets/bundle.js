@@ -61,22 +61,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ScaleScroller = __webpack_require__(160);
+	var _SealPeriods = __webpack_require__(169);
 
-	var _ScaleScroller2 = _interopRequireDefault(_ScaleScroller);
-
-	var _ScaleBackground = __webpack_require__(165);
-
-	var _ScaleBackground2 = _interopRequireDefault(_ScaleBackground);
+	var _SealPeriods2 = _interopRequireDefault(_SealPeriods);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_reactDom2.default.render(_react2.default.createElement(
-	  'div',
-	  null,
-	  _react2.default.createElement(_ScaleBackground2.default, null),
-	  _react2.default.createElement(_ScaleScroller2.default, { itemsCount: 3, maxFont: 3 })
-	), document.getElementById('app'));
+	_reactDom2.default.render(_react2.default.createElement(_SealPeriods2.default, null), document.getElementById('app'));
 
 /***/ },
 /* 2 */
@@ -19699,7 +19690,11 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	__webpack_require__(161);
+	var _MsgCenter = __webpack_require__(161);
+
+	var _MsgCenter2 = _interopRequireDefault(_MsgCenter);
+
+	__webpack_require__(162);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19769,6 +19764,7 @@
 					_this2.setState({
 						activeItemIndex: nextIndex
 					});
+					_MsgCenter2.default.invoke('on-item-changed', nextIndex);
 					_this2.scroller.scrollTo(_this2.state.itemWidth * nextIndex * -1, 0, 300);
 				});
 
@@ -19875,20 +19871,48 @@
 		normalFont: 1.6,
 		itemsCount: 3,
 		columns: 3,
-		items: [{ seal: '活期' }, { seal: '14天' }, { seal: '28天' }, { seal: '30天' }, { seal: '60天' }]
+		items: [{ seal: '活期' }, { seal: '14天' }, { seal: '28天' }, { seal: '30天' }, { seal: '60天' }, { seal: '100天' }, { seal: '999天' }]
 	};
 
 /***/ },
 /* 161 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var MsgCenter = {
+
+		handlers: {},
+
+		on: function on(key, handlerFunc) {
+			if (this.handlers[key]) return;
+			this.handlers[key] = handlerFunc;
+		},
+		invoke: function invoke(key, option) {
+			if (!this.handlers[key]) return;
+			this.handlers[key](option);
+		},
+		remove: function remove(key) {
+			delete this.handlers[key];
+		}
+	};
+
+	exports.default = MsgCenter;
+
+/***/ },
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(162);
+	var content = __webpack_require__(163);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(164)(content, {});
+	var update = __webpack_require__(165)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -19905,21 +19929,21 @@
 	}
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(163)();
+	exports = module.exports = __webpack_require__(164)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".scale-wrapper {\n  position: relative;\n  width: 100%;\n  height: 9.9rem;\n  overflow: hidden;\n  border-bottom: 1px dashed #D8E2E9;\n}\n.scale-wrapper .scale-scroller {\n  position: absolute;\n  height: 100%;\n}\n.scale-wrapper .scale-scroller .scroller-item {\n  font-size: 1.8rem;\n  color: #9DACB6;\n}\n.scale-wrapper .scale-scroller .scroller-item .seal-txt {\n  margin-top: 3rem;\n}\n.scale-wrapper .scale-scroller .scroller-item.active {\n  margin-top: 0rem;\n  color: #FC7946;\n  transform: scale3d(1, 1, 1);\n}\n", ""]);
+	exports.push([module.id, ".scale-wrapper {\n  position: relative;\n  width: 100%;\n  height: 9.9rem;\n  overflow: hidden;\n  border-bottom: 1px dashed #D8E2E9;\n}\n.scale-wrapper .scale-scroller {\n  position: absolute;\n  height: 100%;\n}\n.scale-wrapper .scale-scroller .scroller-item {\n  font-size: 1.8rem;\n  color: #9DACB6;\n}\n.scale-wrapper .scale-scroller .scroller-item .seal-txt {\n  margin-top: 3rem;\n  white-space: nowrap;\n}\n.scale-wrapper .scale-scroller .scroller-item.active {\n  margin-top: 0rem;\n  color: #FC7946;\n  transform: scale3d(1, 1, 1);\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports) {
 
 	/*
@@ -19975,7 +19999,7 @@
 
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -20229,7 +20253,7 @@
 
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20242,6 +20266,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	__webpack_require__(167);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var ScaleBackground = function ScaleBackground(props) {
@@ -20253,23 +20279,13 @@
 			left: 0,
 			right: 0
 		};
-		var cStyle = {
-			width: '33.3%',
-			height: 'calc(100% + 5px)',
-			borderBottom: '6px solid #FC7946',
-			textAlign: 'center',
-			margin: '0 auto',
-			paddingTop: '1.5rem',
-			color: '#FC7946',
-			fontSize: '1.3rem',
-			backgroundImage: '-webkit-gradient(linear, center top, center bottom, color-stop(0, #FFFFFF), color-stop(1, #FFF2EE))'
-		};
+
 		return _react2.default.createElement(
 			'div',
-			{ style: bgStyle },
+			{ style: bgStyle, className: 'scale-background' },
 			_react2.default.createElement(
 				'div',
-				{ style: cStyle },
+				{ className: 'scale-content' },
 				_react2.default.createElement(
 					'span',
 					null,
@@ -20280,6 +20296,277 @@
 	};
 
 	exports.default = ScaleBackground;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(168);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(165)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./ScaleBackground.less", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./ScaleBackground.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(164)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".scale-background .scale-content {\n  width: 33.3%;\n  height: 100%;\n  text-align: center;\n  margin: 0 auto;\n  padding-top: 1.5rem;\n  color: #FC7946;\n  font-size: 1.3rem;\n  position: relative;\n  background-image: -webkit-gradient(linear, center top, center bottom, color-stop(0, #FFFFFF), color-stop(1, #FFF2EE));\n}\n.scale-background .scale-content:after {\n  content: '';\n  display: block;\n  width: 100%;\n  background: #FC7946;\n  height: 6px;\n  position: absolute;\n  bottom: -5px;\n  z-index: 1;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 169 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _reactDom = __webpack_require__(2);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _react = __webpack_require__(148);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _ScaleScroller = __webpack_require__(160);
+
+	var _ScaleScroller2 = _interopRequireDefault(_ScaleScroller);
+
+	var _ScaleBackground = __webpack_require__(166);
+
+	var _ScaleBackground2 = _interopRequireDefault(_ScaleBackground);
+
+	var _DescSection = __webpack_require__(170);
+
+	var _DescSection2 = _interopRequireDefault(_DescSection);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SealPeriods = function (_React$Component) {
+		_inherits(SealPeriods, _React$Component);
+
+		function SealPeriods() {
+			_classCallCheck(this, SealPeriods);
+
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(SealPeriods).apply(this, arguments));
+		}
+
+		_createClass(SealPeriods, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(_ScaleBackground2.default, null),
+					_react2.default.createElement(_ScaleScroller2.default, { itemsCount: 3, maxFont: 2.6 }),
+					_react2.default.createElement(_DescSection2.default, null)
+				);
+			}
+		}]);
+
+		return SealPeriods;
+	}(_react2.default.Component);
+
+	exports.default = SealPeriods;
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(148);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _MsgCenter = __webpack_require__(161);
+
+	var _MsgCenter2 = _interopRequireDefault(_MsgCenter);
+
+	__webpack_require__(171);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var DescSection = function (_React$Component) {
+		_inherits(DescSection, _React$Component);
+
+		function DescSection(props) {
+			_classCallCheck(this, DescSection);
+
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DescSection).call(this, props));
+
+			_this.state = {
+				activeIndex: 1
+			};
+			return _this;
+		}
+
+		_createClass(DescSection, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var _this2 = this;
+
+				_MsgCenter2.default.on('on-item-changed', function (index) {
+					_this2.setState({
+						activeIndex: index
+					});
+				});
+			}
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				_MsgCenter2.default.remove('on-item-changed');
+			}
+		}, {
+			key: 'getExtraSectionClass',
+			value: function getExtraSectionClass(target) {
+				if (this.state.activeIndex === target) {
+					return 'extra-section active';
+				} else {
+					return 'extra-section';
+				}
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'div',
+						{ className: 'desc-section' },
+						_react2.default.createElement(
+							'h4',
+							{ className: 'desc-section-title' },
+							'昨日年化收益率',
+							_react2.default.createElement(
+								'span',
+								{ className: 'section-value' },
+								this.state.activeIndex,
+								'%'
+							)
+						),
+						_react2.default.createElement(
+							'h4',
+							{ className: 'desc-section-title' },
+							'可投',
+							_react2.default.createElement(
+								'span',
+								{ className: 'section-value' },
+								this.state.activeIndex * 1000
+							),
+							'元'
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: this.getExtraSectionClass(2) },
+						_react2.default.createElement(
+							'h4',
+							null,
+							'比继续持有活期2天收益降低约29.68元，'
+						),
+						_react2.default.createElement(
+							'h4',
+							null,
+							'试试其他锁定期'
+						)
+					)
+				);
+			}
+		}]);
+
+		return DescSection;
+	}(_react2.default.Component);
+
+	exports.default = DescSection;
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(172);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(165)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./DescSection.less", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./DescSection.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(164)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".desc-section {\n  width: 100%;\n  height: 7rem;\n  background: #FFF;\n  border-bottom: 1px solid #D8E2E9;\n  text-align: center;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n}\n.desc-section .desc-section-title {\n  margin: 0;\n  color: #13334D;\n  font-size: 1.3rem;\n  font-weight: 100;\n}\n.desc-section .desc-section-title .section-value {\n  color: #FC7946;\n}\n.desc-section .desc-section-title:first-child {\n  margin-bottom: 0.45rem;\n}\n.extra-section {\n  height: 0;\n  background: #FFF6D4;\n  width: 100%;\n  z-index: -1;\n  transform-style: flat;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n  transition: height 0.2s ease-out;\n}\n.extra-section h4 {\n  margin: 0;\n  color: #13334D;\n  font-size: 1rem;\n  font-weight: 100;\n  color: #FC7946;\n  line-height: 1.3rem;\n}\n.extra-section.active {\n  height: 5rem;\n}\n", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ]);

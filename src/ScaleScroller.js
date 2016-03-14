@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import MsgCenter from './MsgCenter.js';
 import './ScaleScroller.less';
 
 export default class ScaleScroller extends React.Component {
@@ -53,8 +54,9 @@ export default class ScaleScroller extends React.Component {
 			nextIndex >= this.props.items.length ? nextIndex=(this.props.items.length - 1) : nextIndex < 0 ? nextIndex=0 :nextIndex
 			this.setState({
 				activeItemIndex : nextIndex,
-			})
-			this.scroller.scrollTo(this.state.itemWidth*nextIndex*-1,0,300)
+			});
+			MsgCenter.invoke('on-item-changed',nextIndex);
+			this.scroller.scrollTo(this.state.itemWidth*nextIndex*-1,0,300);
 		})
 
 		this.setState({
@@ -141,5 +143,5 @@ ScaleScroller.defaultProps = {
 	normalFont : 1.6,
 	itemsCount : 3,
 	columns : 3,
-	items:[{seal:'活期'},{seal:'14天'},{seal:'28天'},{seal:'30天'},{seal:'60天'}]
+	items:[{seal:'活期'},{seal:'14天'},{seal:'28天'},{seal:'30天'},{seal:'60天'},{seal:'100天'},{seal:'999天'}]
 }

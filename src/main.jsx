@@ -1,8 +1,5 @@
 import ReactDom from 'react-dom';
 import React from 'react';
-import ScaleScroller from './ScaleScroller.js';
-import ScaleBackground from './ScaleBackground.js';
+import SealPeriods from './SealPeriods.js';
 
-
-
-ReactDom.render(<div><ScaleBackground/><ScaleScroller itemsCount={3} maxFont={3}/></div>,document.getElementById('app'))
+ReactDom.render(<SealPeriods/>,document.getElementById('app'))

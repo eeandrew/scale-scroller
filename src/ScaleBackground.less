@@ -1,0 +1,23 @@
+.scale-background {
+	.scale-content {
+		width:33.3%;
+		height: 100%;
+		text-align:center;
+		margin:0 auto;
+		padding-top:1.5rem;
+		color : #FC7946;
+		font-size:1.3rem;
+		position:relative;
+		background-image : -webkit-gradient(linear, center top, center bottom, color-stop(0, #FFFFFF), color-stop(1, #FFF2EE));
+		&:after {
+			content:'';
+			display:block;
+			width:100%;
+			background:#FC7946;
+			height: 6px;
+		    position: absolute;
+		    bottom: -5px;
+		    z-index:1;
+		}
+	}
+}
