@@ -61,12 +61,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _SealPeriods = __webpack_require__(169);
+	var _SealPeriods = __webpack_require__(160);
 
 	var _SealPeriods2 = _interopRequireDefault(_SealPeriods);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	document.body.style.background = '#EDF2F6';
 	_reactDom2.default.render(_react2.default.createElement(_SealPeriods2.default, null), document.getElementById('app'));
 
 /***/ },
@@ -19682,6 +19683,78 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _reactDom = __webpack_require__(2);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _react = __webpack_require__(148);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _ScaleScroller = __webpack_require__(161);
+
+	var _ScaleScroller2 = _interopRequireDefault(_ScaleScroller);
+
+	var _ScaleBackground = __webpack_require__(167);
+
+	var _ScaleBackground2 = _interopRequireDefault(_ScaleBackground);
+
+	var _DescSection = __webpack_require__(170);
+
+	var _DescSection2 = _interopRequireDefault(_DescSection);
+
+	var _InvestInput = __webpack_require__(173);
+
+	var _InvestInput2 = _interopRequireDefault(_InvestInput);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SealPeriods = function (_React$Component) {
+		_inherits(SealPeriods, _React$Component);
+
+		function SealPeriods() {
+			_classCallCheck(this, SealPeriods);
+
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(SealPeriods).apply(this, arguments));
+		}
+
+		_createClass(SealPeriods, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(_ScaleBackground2.default, null),
+					_react2.default.createElement(_ScaleScroller2.default, { itemsCount: 3, maxFont: 3.2 }),
+					_react2.default.createElement(_DescSection2.default, null),
+					_react2.default.createElement(_InvestInput2.default, null)
+				);
+			}
+		}]);
+
+		return SealPeriods;
+	}(_react2.default.Component);
+
+	exports.default = SealPeriods;
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(148);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -19690,11 +19763,11 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _MsgCenter = __webpack_require__(161);
+	var _MsgCenter = __webpack_require__(162);
 
 	var _MsgCenter2 = _interopRequireDefault(_MsgCenter);
 
-	__webpack_require__(162);
+	__webpack_require__(163);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19809,7 +19882,7 @@
 			value: function getMockChildren() {
 				var children = [];
 				for (var i = 0; i < this.props.items.length; i++) {
-					var itemFont = this.state.activeItemIndex === i ? this.state.font : 1;
+					var itemFont = this.state.activeItemIndex === i ? this.state.font : this.props.normalFont;
 					var itemStyle = this.getItemStyle(this.state.itemWidth, itemFont);
 					var isActive = this.state.activeItemIndex === i ? 'active' : '';
 					children.push(_react2.default.createElement(
@@ -19868,14 +19941,14 @@
 
 	ScaleScroller.defaultProps = {
 		maxFont: 3,
-		normalFont: 1.6,
+		normalFont: 1.8,
 		itemsCount: 3,
 		columns: 3,
 		items: [{ seal: '活期' }, { seal: '14天' }, { seal: '28天' }, { seal: '30天' }, { seal: '60天' }, { seal: '100天' }, { seal: '999天' }]
 	};
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -19903,16 +19976,16 @@
 	exports.default = MsgCenter;
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(163);
+	var content = __webpack_require__(164);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(165)(content, {});
+	var update = __webpack_require__(166)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -19929,10 +20002,10 @@
 	}
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(164)();
+	exports = module.exports = __webpack_require__(165)();
 	// imports
 
 
@@ -19943,7 +20016,7 @@
 
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports) {
 
 	/*
@@ -19999,7 +20072,7 @@
 
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -20253,7 +20326,7 @@
 
 
 /***/ },
-/* 166 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20266,7 +20339,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(167);
+	__webpack_require__(168);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20298,16 +20371,16 @@
 	exports.default = ScaleBackground;
 
 /***/ },
-/* 167 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(168);
+	var content = __webpack_require__(169);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(165)(content, {});
+	var update = __webpack_require__(166)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -20324,10 +20397,10 @@
 	}
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(164)();
+	exports = module.exports = __webpack_require__(165)();
 	// imports
 
 
@@ -20336,73 +20409,6 @@
 
 	// exports
 
-
-/***/ },
-/* 169 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _reactDom = __webpack_require__(2);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _react = __webpack_require__(148);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _ScaleScroller = __webpack_require__(160);
-
-	var _ScaleScroller2 = _interopRequireDefault(_ScaleScroller);
-
-	var _ScaleBackground = __webpack_require__(166);
-
-	var _ScaleBackground2 = _interopRequireDefault(_ScaleBackground);
-
-	var _DescSection = __webpack_require__(170);
-
-	var _DescSection2 = _interopRequireDefault(_DescSection);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var SealPeriods = function (_React$Component) {
-		_inherits(SealPeriods, _React$Component);
-
-		function SealPeriods() {
-			_classCallCheck(this, SealPeriods);
-
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(SealPeriods).apply(this, arguments));
-		}
-
-		_createClass(SealPeriods, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(_ScaleBackground2.default, null),
-					_react2.default.createElement(_ScaleScroller2.default, { itemsCount: 3, maxFont: 2.6 }),
-					_react2.default.createElement(_DescSection2.default, null)
-				);
-			}
-		}]);
-
-		return SealPeriods;
-	}(_react2.default.Component);
-
-	exports.default = SealPeriods;
 
 /***/ },
 /* 170 */
@@ -20420,7 +20426,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _MsgCenter = __webpack_require__(161);
+	var _MsgCenter = __webpack_require__(162);
 
 	var _MsgCenter2 = _interopRequireDefault(_MsgCenter);
 
@@ -20443,7 +20449,7 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DescSection).call(this, props));
 
 			_this.state = {
-				activeIndex: 1
+				activeIndex: 0
 			};
 			return _this;
 		}
@@ -20468,9 +20474,9 @@
 			key: 'getExtraSectionClass',
 			value: function getExtraSectionClass(target) {
 				if (this.state.activeIndex === target) {
-					return 'extra-section active';
+					return 'active';
 				} else {
-					return 'extra-section';
+					return '';
 				}
 			}
 		}, {
@@ -20507,7 +20513,7 @@
 					),
 					_react2.default.createElement(
 						'div',
-						{ className: this.getExtraSectionClass(2) },
+						{ className: 'extra-section ' + this.getExtraSectionClass(1) },
 						_react2.default.createElement(
 							'h4',
 							null,
@@ -20518,7 +20524,8 @@
 							null,
 							'试试其他锁定期'
 						)
-					)
+					),
+					_react2.default.createElement('div', { className: 'placeholder-section ' + this.getExtraSectionClass(1) })
 				);
 			}
 		}]);
@@ -20538,7 +20545,7 @@
 	var content = __webpack_require__(172);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(165)(content, {});
+	var update = __webpack_require__(166)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -20558,12 +20565,131 @@
 /* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(164)();
+	exports = module.exports = __webpack_require__(165)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".desc-section {\n  width: 100%;\n  height: 7rem;\n  background: #FFF;\n  border-bottom: 1px solid #D8E2E9;\n  text-align: center;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n}\n.desc-section .desc-section-title {\n  margin: 0;\n  color: #13334D;\n  font-size: 1.3rem;\n  font-weight: 100;\n}\n.desc-section .desc-section-title .section-value {\n  color: #FC7946;\n}\n.desc-section .desc-section-title:first-child {\n  margin-bottom: 0.45rem;\n}\n.extra-section {\n  height: 0;\n  background: #FFF6D4;\n  width: 100%;\n  z-index: -1;\n  transform-style: flat;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n  transition: height 0.2s ease-out;\n}\n.extra-section h4 {\n  margin: 0;\n  color: #13334D;\n  font-size: 1rem;\n  font-weight: 100;\n  color: #FC7946;\n  line-height: 1.3rem;\n}\n.extra-section.active {\n  height: 5rem;\n}\n", ""]);
+	exports.push([module.id, ".desc-section {\n  width: 100%;\n  height: 7rem;\n  background: #FFF;\n  border-bottom: 1px solid #D8E2E9;\n  text-align: center;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n}\n.desc-section .desc-section-title {\n  margin: 0;\n  color: #13334D;\n  font-size: 1.3rem;\n  font-weight: 100;\n}\n.desc-section .desc-section-title .section-value {\n  color: #FC7946;\n}\n.desc-section .desc-section-title:first-child {\n  margin-bottom: 0.45rem;\n}\n.extra-section {\n  height: 5rem;\n  background: #FFF6D4;\n  width: 100%;\n  z-index: -1;\n  transform-style: flat;\n  display: flex;\n  display: -webkit-flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n  transition: all 0.1s linear;\n  -webkit-transition: all 0.1s linear;\n  position: absolute;\n  transform: translate3d(0, -100%, 0);\n  -webkit-transform: translate3d(0, -100%, 0);\n}\n.extra-section.active {\n  transform: translate3d(0, 0, 0);\n  -webkit-transform: translate3d(0, 0, 0);\n}\n.extra-section h4 {\n  margin: 0;\n  font-weight: 100;\n  font-size: 1rem;\n  color: #FC7946;\n  line-height: 1.3rem;\n}\n.placeholder-section {\n  height: 0;\n  width: 100%;\n  transition: height 0.1s linear;\n  -webkit-transition: height 0.1s linear;\n}\n.placeholder-section.active {\n  height: 5rem;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(148);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	__webpack_require__(174);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var InvestInput = function (_React$Component) {
+		_inherits(InvestInput, _React$Component);
+
+		function InvestInput(props) {
+			_classCallCheck(this, InvestInput);
+
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(InvestInput).call(this, props));
+		}
+
+		_createClass(InvestInput, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					{ className: 'invest-input-wrapper' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'invest-input' },
+						_react2.default.createElement(
+							'div',
+							{ className: 'input-label' },
+							'投资金额'
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'input-section' },
+							_react2.default.createElement('input', { ref: 'invest-input' }),
+							_react2.default.createElement(
+								'span',
+								null,
+								'元'
+							)
+						)
+					),
+					_react2.default.createElement(
+						'p',
+						{ className: 'input-explain' },
+						'起投金额100元，递增金额100元'
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'next-step' },
+						'下一步'
+					)
+				);
+			}
+		}]);
+
+		return InvestInput;
+	}(_react2.default.Component);
+
+	exports.default = InvestInput;
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(175);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(166)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./InvestInput.less", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./InvestInput.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(165)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".invest-input-wrapper {\n  margin-top: 1.5rem;\n}\n.invest-input-wrapper .invest-input {\n  height: 5rem;\n  background: #FFF;\n  border-top: 1px solid #D8E2E9;\n  border-bottom: 1px solid #D8E2E9;\n  display: flex;\n  display: -webkit-flex;\n  color: #13334D;\n  font-size: 1.5rem;\n}\n.invest-input-wrapper .invest-input > .input-label {\n  width: 9.5rem;\n  line-height: 5rem;\n  padding-left: 1.5rem;\n}\n.invest-input-wrapper .invest-input .input-section {\n  flex: 1;\n  position: relative;\n  display: flex;\n  display: -webkit-flex;\n  align-items: center;\n  justify-content: center;\n  padding-right: 1.5rem;\n}\n.invest-input-wrapper .invest-input .input-section > input {\n  border: 0;\n  outline: none;\n  width: 100%;\n  font-size: 1.5rem;\n  font-weight: 300;\n}\n.invest-input-wrapper .input-explain {\n  color: #697D91;\n  font-size: 1.1rem;\n  margin-left: 1.5rem;\n}\n.invest-input-wrapper .next-step {\n  background: #FC7946;\n  margin: 3rem 1.5rem 0 1.5rem;\n  color: #FFF;\n  border-radius: 0.2rem;\n  height: 4.9rem;\n  font-size: 1.8rem;\n  line-height: 4.9rem;\n  text-align: center;\n}\n.invest-input-wrapper .next-step.active {\n  background: #FC7946;\n}\n", ""]);
 
 	// exports
 

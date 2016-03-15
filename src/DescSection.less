@@ -24,7 +24,7 @@
 
 }
 .extra-section {
-		height:0;
+		height:5rem;
 		background:#FFF6D4;
 		width:100%;
 		z-index:-1;
@@ -35,16 +35,30 @@
 		align-items:center;
 		justify-content:center;
 		overflow:hidden;
-		transition:height 0.2s ease-out;
+		transition:all 0.1s linear;
+		-webkit-transition:all 0.1s linear;
+		position:absolute;
+		transform:translate3d(0,-100%,0);
+		-webkit-transform:translate3d(0,-100%,0);
+		&.active {
+			transform:translate3d(0,0,0);
+			-webkit-transform:translate3d(0,0,0);
+		}
 		h4 {
 			margin:0;
-			color:#13334D;
-			font-size:1rem;
 			font-weight:100;
+			font-size:1rem;
 			color:#FC7946;
 			line-height:1.3rem;
 		}
-		&.active {
-			height:5rem;
-		}
-	}
+}
+
+.placeholder-section {
+	    height:0;
+	    width:100%;
+	    transition:height 0.1s linear;
+	    -webkit-transition:height 0.1s linear;
+	    &.active {
+	    	height:5rem;
+	    }	
+}

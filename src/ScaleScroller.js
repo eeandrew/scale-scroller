@@ -97,7 +97,7 @@ export default class ScaleScroller extends React.Component {
 	getMockChildren() {
 		let children = [];
 		for(let i=0;i<this.props.items.length;i++) {
-			let itemFont = this.state.activeItemIndex === i ? this.state.font : 1;
+			let itemFont = this.state.activeItemIndex === i ? this.state.font : this.props.normalFont;
 			let itemStyle = this.getItemStyle(this.state.itemWidth,itemFont);
 			let isActive = this.state.activeItemIndex === i ? 'active' : '';
 			children.push(<li style={itemStyle} className={"scroller-item " + isActive} key={i}><div className="seal-txt">{this.props.items[i].seal}</div></li>)
@@ -140,7 +140,7 @@ ScaleScroller.propTypes = {
 
 ScaleScroller.defaultProps = {
 	maxFont : 3,
-	normalFont : 1.6,
+	normalFont : 1.8,
 	itemsCount : 3,
 	columns : 3,
 	items:[{seal:'活期'},{seal:'14天'},{seal:'28天'},{seal:'30天'},{seal:'60天'},{seal:'100天'},{seal:'999天'}]
